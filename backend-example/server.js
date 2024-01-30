@@ -173,7 +173,7 @@ app.get("/getAllNotes", express.json(), async (req, res) => {
   
         // Find note with given ID
         const collection = db.collection(COLLECTIONS.notes);
-        const data = await collection.find({username: decoded.username});
+        const data = await collection.find({username: decoded.username}).toArray();
         console.log(data);
         res.json({ response: data });
       });
