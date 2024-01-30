@@ -174,6 +174,7 @@ app.get("/getAllNotes", express.json(), async (req, res) => {
         // Find note with given ID
         const collection = db.collection(COLLECTIONS.notes);
         const data = await collection.find({username: decoded.username});
+        console.log(data);
         res.json({ response: data });
       });
     } catch (error) {
@@ -231,11 +232,14 @@ app.patch("/editNote/:noteId", express.json(), async (req, res) => {
   
         // Find note with given ID
         const collection = db.collection(COLLECTIONS.notes);
-        const data = await collection.findOneAndDelete({
-          username: decoded.username,
-          title: title,
-          content: content,
-          _id: new ObjectId(noteId),
+        const data = await collection.updateOne({
+          username: decoded.username, 
+          _id: new ObjectId(noteId),},
+          { $set: 
+            {
+            title: title,
+            content: content,
+            }
         });
         if (!data) {
           return res
